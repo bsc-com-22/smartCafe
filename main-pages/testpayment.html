@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayChangu Test</title>
+  <script src="https://in.paychangu.com/js/popup.js"></script>
+</head>
+<body>
+  <h1>PayChangu Test Page</h1>
+  <button onclick="testPayment()">Test Payment</button>
+
+  <script>
+    function testPayment() {
+      console.log("Testing PayChangu...");
+      
+      if (typeof PaychanguCheckout !== 'function') {
+        console.error("PaychanguCheckout function not found!");
+        alert("PaychanguCheckout function is not available. Check the console for details.");
+        return;
+      }
+      
+      try {
+        PaychanguCheckout({
+          "public_key": "pub-test-HYSBQpa5K91mmXMHrjhkmC6mAjObPJ2u",
+          "tx_ref": "TEST-" + Date.now(),
+          "amount": 100,
+          "currency": "MWK",
+          "callback_url": "https://example.com/callback",
+          "return_url": "https://example.com/return",
+          "customer": {
+            "email": "test@example.com",
+            "first_name": "Test",
+            "last_name": "User"
+          },
+          "customization": {
+            "title": "Test Payment",
+            "description": "Test payment for PayChangu integration",
+          }
+        });
+        
+        console.log("PayChangu checkout launched");
+      } catch (error) {
+        console.error("Error launching PayChangu:", error);
+        alert("Error: " + error.message);
+      }
+    }
+  </script>
+</body>
+</html>

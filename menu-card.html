@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Cafe - Orders</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo">
+      <div class="logo-icon">S</div>
+      <span class="smart">Smart</span><span class="cafe">Cafe</span>
+    </a>
+    
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="account.html">Account</a></li>
+    </ul>
+    
+    <div class="nav-right">
+      <a href="orders.html" class="active">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="badge">0</span>
+        </div>
+      </a>
+      
+      <a href="notifications.html">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="badge">0</span>
+        </div>
+      </a>
+      
+      <button class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Banner Section -->
+  <section class="banner">
+    <h1>Your Orders</h1>
+    <p>Discover our selection of fresh, delicious meals made with high-quality ingredients</p>
+  </section>
+
+  <!-- Order Container -->
+  <main class="order-container">
+    <div class="order-items">
+      <!-- Order items will be populated dynamically -->
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div class="summary-items">
+        <!-- Summary items will be populated dynamically -->
+      </div>
+      <div class="summary-total">
+        <span>Total Cost</span>
+        <span class="summary-total-amount">K0.00</span>
+      </div>
+
+      <script src="https://checkout.paychangu.com/v1/paychangu.js"></script>
+      <button class="checkout-btn" onclick="makePayment()">Proceed to Payment</button>
+    </div>
+  </main>
+  <script>
+    function makePayment() {
+  let total = 0;
+
+  if (localStorage.getItem('cartItems')) {
+    const orderItems = JSON.parse(localStorage.getItem('cartItems'));
+
+    orderItems.forEach(item => {
+      if (item.quantity > 0) {
+        total += item.quantity * item.price;
+      }
+    });
+
+    total += 500; // add delivery fee
+  }
+
+  // Convert to tambala (multiply by 100 if PayChangu uses tambala)
+  const totalInTambala = total * 100;
+
+  PayChanguCheckout.open({
+    publicKey: "pub-live-aa9JVmOObGUHsiKEJHth1plnEFNt8b10",
+    amount: totalInTambala,
+    currency: "MWK",
+    description: "Smart Cafe Order Payment",
+    reference: "ORD-" + Date.now(), // Unique order ID using timestamp
+    redirectUrl: "https://yourdomain.com/payment-success",
+    customer: {
+      name: "Blessings Chidazi",
+      email: "blessings@example.com"
+    }
+  });
+}
+
+    // Orders page JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+  // Load cart items from localStorage
+  let orderItems = [];
+  
+  if (localStorage.getItem('cartItems')) {
+    orderItems = JSON.parse(localStorage.getItem('cartItems'));
+  }
+  
+  // Function to render order items
+  function renderOrderItems() {
+    const orderItemsContainer = document.querySelector('.order-items');
+    if (!orderItemsContainer) return;
+    
+    orderItemsContainer.innerHTML = '';
+    
+    if (orderItems.length === 0) {
+      // Display empty cart message
+      orderItemsContainer.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px 0;">
+          <h2>Your cart is empty</h2>
+          <p>Browse our menu to add items to your order</p>
+          <a href="menu.html">
+            <button class="checkout-btn" style="max-width: 200px; margin-top: 20px;">View Menu</button>
+          </a>
+        </div>
+      `;
+      return;
+    }
+    
+    // Create HTML for each item
+    orderItems.forEach((item, index) => {
+      if (item.quantity > 0) {
+        const orderItemElement = document.createElement('div');
+        orderItemElement.className = 'order-item';
+        orderItemElement.innerHTML = `
+          <img src="${item.image || '/api/placeholder/400/320'}" alt="${item.name}" class="item-image">
+          <div class="item-details">
+            <div class="item-title">
+              <span>${item.name}</span>
+              <span>⭐ ${(Math.random() * (5 - 4) + 4).toFixed(1)}</span>
+            </div>
+            <div class="item-price">K${item.price.toFixed(2)}</div>
+            <div class="quantity-controls">
+              <button class="quantity-btn decrease" data-index="${index}">-</button>
+              <span class="quantity-display">${item.quantity}</span>
+              <button class="quantity-btn increase" data-index="${index}">+</button>
+            </div>
+            <button class="remove-btn" data-index="${index}">Remove</button>
+          </div>
+        `;
+        
+        orderItemsContainer.appendChild(orderItemElement);
+      }
+    });
+    
+    // Attach event listeners to new buttons
+    attachEventListeners();
+  }
+  
+  // Function to attach event listeners
+  function attachEventListeners() {
+    const decreaseButtons = document.querySelectorAll('.decrease');
+    const increaseButtons = document.querySelectorAll('.increase');
+    const removeButtons = document.querySelectorAll('.remove-btn');
+    
+    decreaseButtons.forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const index = parseInt(this.getAttribute('data-index'));
+        if (orderItems[index].quantity > 1) {
+          orderItems[index].quantity--;
+          this.nextElementSibling.textContent = orderItems[index].quantity;
+          updateOrderSummary();
+          saveToLocalStorage();
+          updateCartBadge();
+        }
+      });
+    });
+    
+    increaseButtons.forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const index = parseInt(this.getAttribute('data-index'));
+        orderItems[index].quantity++;
+        this.previousElementSibling.textContent = orderItems[index].quantity;
+        updateOrderSummary();
+        saveToLocalStorage();
+        updateCartBadge();
+      });
+    });
+    
+    removeButtons.forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const itemIndex = parseInt(this.getAttribute('data-index'));
+        const item = this.closest('.order-item');
+        
+        item.style.transition = 'opacity 0.3s ease';
+        item.style.opacity = '0';
+        
+        setTimeout(() => {
+          orderItems.splice(itemIndex, 1);
+          saveToLocalStorage();
+          updateCartBadge();
+          renderOrderItems();
+          updateOrderSummary();
+        }, 300);
+      });
+    });
+  }
+  
+  // Function to update order summary
+  function updateOrderSummary() {
+    const summaryItems = document.querySelector('.summary-items');
+    const totalAmount = document.querySelector('.summary-total-amount');
+    
+    if (!summaryItems || !totalAmount) return;
+    
+    // Clear current summary items
+    summaryItems.innerHTML = '';
+    
+    // Add updated items to summary
+    let total = 0;
+    orderItems.forEach(item => {
+      if (item.quantity > 0) {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        
+        const summaryItem = document.createElement('div');
+        summaryItem.className = 'summary-item';
+        summaryItem.innerHTML = `
+          <span>${item.name} ${item.quantity > 1 ? `× ${item.quantity}` : ''}</span>
+          <span>K${itemTotal.toFixed(2)}</span>
+        `;
+        
+        summaryItems.appendChild(summaryItem);
+      }
+    });
+    
+    // Add delivery fee if there are items
+    if (orderItems.length > 0) {
+      const deliveryFee = 0;
+      total += deliveryFee;
+      
+      const deliveryItem = document.createElement('div');
+      deliveryItem.className = 'summary-item';
+      deliveryItem.innerHTML = `
+        <span>Delivery Fee</span>
+        <span>K${deliveryFee.toFixed(2)}</span>
+      `;
+      
+      summaryItems.appendChild(deliveryItem);
+    }
+    
+    // Update total
+    totalAmount.textContent = `K${total.toFixed(2)}`;
+    
+    // Update checkout button visibility
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.style.display = orderItems.length > 0 ? 'block' : 'none';
+    }
+  }
+  
+  // Function to save cart to localStorage
+  function saveToLocalStorage() {
+    localStorage.setItem('cartItems', JSON.stringify(orderItems));
+  }
+  
+  // Update cart badge count
+  function updateCartBadge() {
+    const cartBadge = document.querySelector('.badge');
+    if (!cartBadge) return;
+    
+    const itemCount = orderItems.reduce((total, item) => total + item.quantity, 0);
+    
+    cartBadge.textContent = itemCount;
+    cartBadge.style.display = itemCount > 0 ? 'flex' : 'none';
+  }
+  
+  // Checkout button
+  const checkoutBtn = document.querySelector('.checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+      if (this.textContent === 'View Menu') {
+        window.location.href = 'menu.html';
+      } else {
+        alert('Proceeding to payment...');
+        // Here you would redirect to payment page
+      }
+    });
+  }
+  
+  // Initialize the page
+  renderOrderItems();
+  updateOrderSummary();
+  updateCartBadge();
+});
+  </script>
+</body>

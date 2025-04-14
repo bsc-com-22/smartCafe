@@ -1,0 +1,121 @@
+:root {
+    --primary-green: #4BA534;
+    --dark-green: #3D8B2C;
+    --background-green: #EAF5E3;
+    --text-dark: #1A3311;
+    --white: #ffffff;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+  }
+  
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    color: #fff;
+    transform: translateX(50px);
+    margin-top: 100px;
+  }
+  
+  .s {
+    background-color: var(--primary-green);
+    border-radius: 50%;
+    padding: 10px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .logo h2{
+    color: white;
+  }
+  .logo-text {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .word-logo {
+    color: var(--primary-green);
+  }
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.side-section{
+  background-color: var(--text-dark);
+  height: 100vh;
+  width: 100vh;
+}
+.welcome-txt{
+  color: #fff;
+  transform: translateX(50px);
+  margin-top: 70px;
+}
+.forms{
+  transform: translateX(50px);
+  margin-top: 100px;
+}
+.forms a{
+  color: #3D8B2C;
+  text-decoration: none;
+}
+.form-heading{
+  text-align: center;
+}
+/* Inputs */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    border-radius: 10px;
+    border: solid 1px var(--primary-green);
+    background-color: var(--background-green);
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Login Button */
+button[type="submit"] {
+    background-color: var(--primary-green);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2a7226;
+}
+
+/* Forgot password + signup */
+.login_forms p {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.login_forms a {
+    color: var(--light-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+  

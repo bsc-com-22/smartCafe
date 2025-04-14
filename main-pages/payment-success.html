@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - Smart Cafe</title>
+  <link rel="stylesheet" href="index.css">
+  <style>
+    .success-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .success-icon svg {
+      width: 60px;
+      height: 60px;
+      stroke: white;
+    }
+    
+    .order-details {
+      margin-top: 40px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      text-align: left;
+    }
+    
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    
+    .order-actions {
+      margin-top: 30px;
+    }
+    
+    .action-btn {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 10px;
+    }
+    
+    .action-btn.primary {
+      background-color: #FF6347;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo">
+      <div class="logo-icon">S</div>
+      <span class="smart">Smart</span><span class="cafe">Cafe</span>
+    </a>
+    
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="account.html">Account</a></li>
+    </ul>
+    
+    <div class="nav-right">
+      <a href="orders.html">
+        <div class="icon-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="badge">0</span>
+        </div>
+      </a>
+      
+      <button class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <div class="success-container">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your order. Your food is being prepared and will be delivered shortly.</p>
+    
+    <div class="order-details">
+      <h2>Order Summary</h2>
+      <div id="order-items">
+        <!-- Order items will be populated dynamically -->
+      </div>
+      
+      <div class="total-row">
+        <span>Total</span>
+        <span id="order-total">K0.00</span>
+      </div>
+      
+      <div style="margin-top: 20px;">
+        <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+        <p><strong>Date:</strong> <span id="order-date"></span></p>
+        <p><strong>Estimated Delivery:</strong> <span id="delivery-time"></span></p>
+      </div>
+    </div>
+    
+    <div class="order-actions">
+      <button class="action-btn primary" onclick="location.href='menu.html'">Order More</button>
+      <button class="action-btn" onclick="location.href='index.html'">Back to Home</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get order ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('order');
+      
+      // Display order details if available
+      if (orderId) {
+        document.getElementById('order-id').textContent = orderId;
+        
+        // Check if we have the order in localStorage
+        const orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        const order = orderHistory.find(o => o.id === orderId);
+        
+        if (order) {
+          // Format date
+          const orderDate = new Date(order.timestamp);
+          document.getElementById('order-date').textContent = orderDate.toLocaleString();
+          
+          // Set estimated delivery time (30 minutes from order time)
+          const deliveryTime = new Date(order.timestamp + 30 * 60 * 1000);
+          document.getElementById('delivery-time').textContent = deliveryTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          
+          // Show total
+          document.getElementById('order-total').textContent = `K${order.total.toFixed(2)}`;
+          
+          // Display items
+          const itemsContainer = document.getElementById('order-items');
+          itemsContainer.innerHTML = '';
+          
+          order.items.forEach(item => {
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            itemRow.innerHTML = `
+              <span>${item.name} ${item.quantity > 1 ? `× ${item.quantity}` : ''}</span>
+              <span>K${(item.price * item.quantity).toFixed(2)}</span>
+            `;
+            itemsContainer.appendChild(itemRow);
+          });
+          
+          // Add delivery fee
+          const deliveryRow = document.createElement('div');
+          deliveryRow.className = 'item-row';
+          deliveryRow.innerHTML = `
+            <span>Delivery Fee</span>
+            <span>K500.00</span>
+          `;
+          itemsContainer.appendChild(deliveryRow);
+        }
+      }
+      
+      // Clear cart badge
+      const cartBadge = document.querySelector('.badge');
+      if (cartBadge) {
+        cartBadge.textContent = '0';
+        cartBadge.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

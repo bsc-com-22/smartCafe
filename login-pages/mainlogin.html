@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIMA Smart Cafe_Main_Login_Page</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        .role-switch{
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .role-switch button{
+            border: 1px solid green;
+            background-color: transparent;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: green;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .role-switch .active{
+            background-color: green;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side-section">
+            <div class="logo">
+                <div class="s">
+                    <h1>S</h1>
+                </div>
+                <div class="word-logo">
+                    <h2>Smart Cafe</h2>
+                </div>
+            </div>
+            <div class="welcome-txt">
+                <h1>Welcome to <br>UNIMA Smart Cafe</h1>
+               <p>Order ahead, skip the line, and enjoy your favorites <br> from any the campus
+                cafe. Login to access your Smart <br> Cafe experience.</p>
+            </div>
+        </div>
+        <div class="forms">
+            <form onsubmit="handleLogin(event)">
+                <h1 class="form-heading">Login to your Account</h1>
+                <div class="role-switch">
+                    <button type="button" onclick="switchRole('student')" class="active">Student</button>
+                    <button type="button" onclick="switchRole('staff')">Staff</button>
+                    <button type="button" onclick="switchRole('admin')">Admin</button>
+
+                </div>
+
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" name="password" id="password" placeholder="Password">
+                <p><a href="forgot-password.html">Forgot Password?</a></p>
+                <button type="submit">Login</button>
+                <p>Don't have an account?<a href="signup.html">Signup</a></p>
+
+            </form>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Color Palette */
+:root {
+    --primary-green: #4BA534;
+    --dark-green: #3D8B2C;
+    --light-green: #6ECF56;
+    --background-green: #EAF5E3;
+    --text-dark: #1A3311;
+    --white: #ffffff;
+}
+
+/* Body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--background-green);
+}
+
+/* Container */
+.container {
+    display: flex;
+    width: 60%;
+    height: 70vh;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Form & Message Sections */
+.form-section, .message-section {
+    flex: 1;
+    padding: 40px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.message-section {
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    color: var(--white);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form Elements */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background: var(--background-green);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.input-group i {
+    margin-right: 10px;
+    color: var(--dark-green);
+}
+
+.input-group input {
+    border: none;
+    background: none;
+    outline: none;
+    flex: 1;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-green);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--dark-green);
+}
+
+/* Forgot Password */
+.forgot-link {
+    display: block;
+    text-align: right;
+    margin: 10px 0;
+    color: var(--primary-green);
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
+
+    .message-section {
+        display: none;
+    }
+}
+
+
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa; /* Light background */
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2c3e50; /* Dark blue-gray */
+    padding: 15px 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Logo Styling */
+.logo-container {
+    flex: 1;
+}
+
+.logo {
+    height: 50px;
+}
+
+/* Logout Button */
+.login-buttons {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+.login-buttons .btn {
+    text-decoration: none;
+    background-color: #e74c3c; /* Red Logout Button */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.login-buttons .btn:hover {
+    background-color: #c0392b;
+}
+
+/* Navbar Styling */
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 15px 0;
+    margin-top: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.nav a i {
+    font-size: 18px;
+}
+
+/* Badges for Orders & Notifications */
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover Effect */
+.nav a:hover {
+    background-color: #1abc9c; /* Teal */
+    color: white;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login-buttons {
+        position: static;
+        margin-top: 10px;
+    }
+
+    .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav a {
+        padding: 8px 10px;
+    }
+}
